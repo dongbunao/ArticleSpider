@@ -22,10 +22,12 @@ class JsonWithEncodingPipeline(object):
     # 自定义json文件的导出
     def __init__(self):
         self.file = codecs.open('article.json', 'w', encoding='utf-8')  # codecs 相对于 open 打开文件能避免很多编码问题
+
     def process_item(self, item,spider):
         lines = json.dumps(dict(item), ensure_ascii=False) + '\n'
         self.file.write(lines)
         return item   # 把item返回，因为下一个pipeline可能还需要使用item
+
     def spider_closed(self, spider):
         self.file.close()
 
@@ -66,8 +68,8 @@ class MysqlTwistedPipeline(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
 
-    @classmethod
-    def from_settings(cls, settings):
+    @classmethod    # classmethod 修饰符对应的函数不需要实例化，不需要 self 参数，但第一个参数需要是表示自身类的 cls 参数，可以来调用类的属性，类的方法，实例化对象等
+    def from_settings(cls, settings):   # cls 参数表示自身类 MysqlTwistedPipeline
         dbparms = dict(
         host = settings['MYSQL_HOST'],
         db = settings['MYSQL_DBNAME'],
@@ -98,10 +100,10 @@ class MysqlTwistedPipeline(object):
         '''
         cursor.execute(insert_sql, (item['title'], item['url'], item['create_date'], item['fav_nums']))
 
+
 class ArticleImagePipeline(ImagesPipeline):
-    # 下载文章的封面图片，获得图片的保存路径
     def item_completed(self, results, item, info):
-        if 'front_image_url' in item:
+        if 'front_image_url' in item:   # item字段中有front_image_url的时候才下载文章的封面图片，获得图片的保存路径
             for key, value in results:
                 image_file_path = value['path']
             item['front_image_path'] = image_file_path
