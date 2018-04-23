@@ -69,11 +69,11 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
     # 'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
     # 'scrapy.pipelines.images.ImagesPipeline': 1,
-    'ArticleSpider.pipelines.ArticleImagePipeline': 1,
+    # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
     # 'ArticleSpider.pipelines.JsonWithEncodingPipeline': 2,
     # 'ArticleSpider.pipelines.JsonExporterPipeline': 2,
     # 'ArticleSpider.pipelines.MysqlPipeline': 2,
-    'ArticleSpider.pipelines.MysqlTwistedPipeline': 2,
+    'ArticleSpider.pipelines.MysqlTwistedPipeline': 1,
 }
 
 # 图片下载相关配置
@@ -81,6 +81,10 @@ IMAGES_URLS_FIELD = 'front_image_url'
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir, 'images')
 
+# 项目根路径的配置
+import sys
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, 'ArticleSpider'))
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -108,3 +112,6 @@ MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'jobbole'
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = '123456'
+
+SQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+SQL_DATE_FORMAT = '%Y-%m-%d'

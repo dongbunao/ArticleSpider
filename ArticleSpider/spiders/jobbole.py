@@ -34,7 +34,7 @@ class JobboleSpider(scrapy.Spider):
 
 
     def parse_detail(self, response):
-        article_item = JobBoleArticleItem()
+        # article_item = JobBoleArticleItem()
 
         # # 对文章详情页进行解析
         # front_image_url = response.meta.get('front_image_url', '')  # 从response的meta中获取 文章的封面图

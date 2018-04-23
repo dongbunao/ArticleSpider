@@ -89,16 +89,13 @@ class MysqlTwistedPipeline(object):
         query.addErrback(self.handle_error, item, spider)
 
     def handle_error(self, failure, item, spider):
-        # 处理一步插入的异常
+        # 处理异步插入的异常
         print(failure)
 
     def do_insert(self, cursor, item):
-        # 执行具体插入
-        insert_sql = '''
-            insert into articles(title, url, create_date, fav_nums)
-            VALUES(%s, %s, %s, %s)
-        '''
-        cursor.execute(insert_sql, (item['title'], item['url'], item['create_date'], item['fav_nums']))
+        # 执行具体插入(动态)
+        insert_sql, params = item.get_insert_sql()
+        cursor.execute(insert_sql, params)
 
 
 class ArticleImagePipeline(ImagesPipeline):
