@@ -4,8 +4,8 @@ from scrapy.exporters import JsonItemExporter
 from twisted.enterprise import adbapi
 import codecs
 import json
-import MySQLdb
-import MySQLdb.cursors
+import pymysql
+import pymysql.cursors
 
 # Define your item pipelines here
 #
@@ -51,7 +51,7 @@ class JsonExporterPipeline(object):
 class MysqlPipeline(object):
     # 同步机制来写入MySQL
     def __init__(self):
-        self.conn = MySQLdb.Connect('localhost', 'root', '123456', 'jobbole', charset='utf8', use_unicode=True)
+        self.conn = pymysql.Connect('localhost', 'root', '123456', 'jobbole', charset='utf8', use_unicode=True)
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
@@ -77,7 +77,7 @@ class MysqlTwistedPipeline(object):
         passwd = settings['MYSQL_PASSWORD'],
         charset = 'utf8',
         use_unicode = True,
-        cursorclass = MySQLdb.cursors.DictCursor,
+        cursorclass = pymysql.cursors.DictCursor,
         )
         dbpool = adbapi.ConnectionPool('MySQLdb', **dbparms)
 
